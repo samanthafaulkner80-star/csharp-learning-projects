@@ -30,26 +30,27 @@ if (folderExists)
     if (folderExists)
     {
         string[] files = GetFiles(readResult!);
-
+        string[] directories = Directory.GetDirectories(readResult!);
+        Console.WriteLine($"\n\nTotal files: {files.Length}");
+        Console.WriteLine($"\nFound {directories.Length} existing folders\n");
+        
         foreach (string file in files)
         {
             //get file extension  
             string fileExtension = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file).Replace(" ", "").ToLower();
+            
             Console.WriteLine($"{fileName}\t\t{fileExtension}");
-        }
-        Console.WriteLine($"\n\nTotal files: {files.Length}");
 
-        string[] directories = Directory.GetDirectories(readResult!);
+            foreach (string folder in directories)
+            {
 
-        Console.WriteLine($"\nFound {directories.Length} existing folders\n");
+                string folderName = Path.GetFileName(folder).Replace(" ", "").ToLower();
+                Console.WriteLine($"Existing folders: {folderName}");
 
-        foreach (string folder in directories)
-        {
-
-            string folderName = Path.GetFileName(folder).Replace(" ", "").ToLower();
-            Console.WriteLine($"Existing folders: {folderName}");
+            }
         }
     }
+
 
 }
