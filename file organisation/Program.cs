@@ -21,8 +21,6 @@ do
 }
 while (!folderExists);
 
-
-
 //get files in folder
 if (folderExists)
 {
@@ -36,8 +34,9 @@ if (folderExists)
         string[] files = GetFiles(readResult!);
 
         foreach (string file in files)
-        {
-            Console.WriteLine($"{file}");
+        {     
+            string fileExtension = Path.GetExtension(file);
+            Console.WriteLine($"{file}\t\t{fileExtension}");           
         }
         Console.WriteLine($"\n\nTotal files: {files.Length}");
     }
