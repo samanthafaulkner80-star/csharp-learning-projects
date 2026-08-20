@@ -6,7 +6,6 @@ do
     // Ask for a folder, read the result, and check if the folder exists.
     Console.WriteLine("Enter the folder you want to organize.");
     readResult = Console.ReadLine();
-    Console.WriteLine($"You entered: [{readResult}]");
     folderExists = Directory.Exists(readResult);
 
     if (folderExists)
@@ -35,8 +34,8 @@ if (folderExists)
         foreach (string file in files)
         {
             //get file extension  
-            string fileExtension = Path.GetExtension(file);        
-            string fileName = Path.GetFileName(file);
+            string fileExtension = Path.GetExtension(file);
+            string fileName = Path.GetFileNameWithoutExtension(file).Replace(" ", "").ToLower();
             Console.WriteLine($"{fileName}\t\t{fileExtension}");
         }
         Console.WriteLine($"\n\nTotal files: {files.Length}");
@@ -47,7 +46,9 @@ if (folderExists)
 
         foreach (string folder in directories)
         {
-            Console.WriteLine($"Existing folders: {folder}");
+
+            string folderName = Path.GetFileName(folder).Replace(" ", "").ToLower();
+            Console.WriteLine($"Existing folders: {folderName}");
         }
     }
 
