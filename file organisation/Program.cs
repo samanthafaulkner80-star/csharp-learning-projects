@@ -35,8 +35,9 @@ if (folderExists)
         foreach (string file in files)
         {
             //get file extension  
-            string fileExtension = Path.GetExtension(file);
-            Console.WriteLine($"{file}\t\t{fileExtension}");
+            string fileExtension = Path.GetExtension(file);        
+            string fileName = Path.GetFileName(file);
+            Console.WriteLine($"{fileName}\t\t{fileExtension}");
         }
         Console.WriteLine($"\n\nTotal files: {files.Length}");
 
