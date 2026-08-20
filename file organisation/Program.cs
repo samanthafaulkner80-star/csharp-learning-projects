@@ -51,7 +51,7 @@ if (folderExists)
                 string folderName = Path.GetFileName(folder).Replace(" ", "").ToLower();
                 Console.WriteLine($"  Comparing with: {folderName}");
                 
-                if (fileName == folderName)
+                if (fileName.Contains(folderName))
                 {
                     Console.WriteLine($"Match: {folderName}");
                 }
