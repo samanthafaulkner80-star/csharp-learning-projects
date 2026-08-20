@@ -1,4 +1,3 @@
-
 string? readResult;
 bool folderExists;
 
@@ -34,10 +33,21 @@ if (folderExists)
         string[] files = GetFiles(readResult!);
 
         foreach (string file in files)
-        {     
+        {
+            //get file extension  
             string fileExtension = Path.GetExtension(file);
-            Console.WriteLine($"{file}\t\t{fileExtension}");           
+            Console.WriteLine($"{file}\t\t{fileExtension}");
         }
         Console.WriteLine($"\n\nTotal files: {files.Length}");
+
+        string[] directories = Directory.GetDirectories(readResult!);
+
+        Console.WriteLine($"\nFound {directories.Length} existing folders\n");
+
+        foreach (string folder in directories)
+        {
+            Console.WriteLine($"Existing folders: {folder}");
+        }
     }
+
 }
