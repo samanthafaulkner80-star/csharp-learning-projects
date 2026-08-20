@@ -1,4 +1,3 @@
-using System.Net;
 
 string? readResult;
 bool folderExists;
@@ -8,6 +7,7 @@ do
     // Ask for a folder, read the result, and check if the folder exists.
     Console.WriteLine("Enter the folder you want to organize.");
     readResult = Console.ReadLine();
+    Console.WriteLine($"You entered: [{readResult}]");
     folderExists = Directory.Exists(readResult);
 
     if (folderExists)
