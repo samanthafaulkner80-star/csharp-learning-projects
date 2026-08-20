@@ -1,34 +1,44 @@
-string ? readResult;
+using System.Net;
 
-//ask for folder, read result, check if the folder exists.
-Console.WriteLine("Enter the folder you want to organize.");
+string? readResult;
+bool folderExists;
 
-readResult = Console.ReadLine();
-
-bool folderExists = Directory.Exists(readResult);
-
-if(folderExists)
+do
 {
-    //continue with organisation
-    Console.WriteLine("Folder found");
+    // Ask for a folder, read the result, and check if the folder exists.
+    Console.WriteLine("Enter the folder you want to organize.");
+    readResult = Console.ReadLine();
+    folderExists = Directory.Exists(readResult);
+
+    if (folderExists)
+    {
+        Console.WriteLine("Folder found");
+    }
+    else
+    {
+        Console.WriteLine("That folder does not exist");
+    }
 }
-else
-{
-    Console.WriteLine("That folder does not exist");
-}
-Console.WriteLine("Files in folder:\n\n");
+while (!folderExists);
+
+
+
 //get files in folder
-static string[] GetFiles(string path)
-{
-    return Directory.GetFiles(path);
-}
 if (folderExists)
 {
-    string[] files = GetFiles(readResult);
-    
-    foreach (string file in files)
+    Console.WriteLine("Files in folder:\n\n");
+    static string[] GetFiles(string path)
     {
-        Console.WriteLine($"{file}");
+        return Directory.GetFiles(path);
     }
-    Console.WriteLine($"\n\nTotal files: {files.Length}");
+    if (folderExists)
+    {
+        string[] files = GetFiles(readResult!);
+
+        foreach (string file in files)
+        {
+            Console.WriteLine($"{file}");
+        }
+        Console.WriteLine($"\n\nTotal files: {files.Length}");
+    }
 }
