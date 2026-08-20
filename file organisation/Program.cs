@@ -79,7 +79,55 @@ if (folderExists)
 }
 static int GetLevenshteinDistance(string first, string second)
 {
-    
+    if (first == second)
+    {
+        return 0;
+    }
+    if (first.Length == 0)
+    {
+        return second.Length;
+    }
+    if (second.Length == 0)
+    {
+        return first.Length;
+    }
+
+    int[,] distance = new int[first.Length + 1, second.Length + 1];
+
+    for (int i = 0; i <= first.Length; i++)
+    {
+        distance[i, 0] = i;
+    }
+    for (int j = 0; j <= second.Length; j++)
+    {
+        distance[0, j] = j;
+    }
+    for (int i = 1; i <= first.Length; i++)
+    {
+        for (int j = 1; j <= second.Length; j++)
+        {
+            char firstChar = first[i - 1];
+            char secondChar = second[j - 1];
+
+            int cost;
+
+            if (firstChar == secondChar)
+            {
+                cost = 0;
+            }
+            else
+            {
+                cost = 1;
+            }
+            int deletion = distance[i - 1, j] + 1;
+            int insertion = distance[i, j - 1] + 1;
+            int substitution = distance[i - 1, j - 1] + cost;
+
+            distance[i, j] = Math.Min(deletion, Math.Min(insertion, substitution));
+
+        }
+    }
+    return distance[first.Length, second.Length];
 }
 static int GetPartialLevenshteinDistance(string fileName, string folderName)
 {
@@ -92,11 +140,11 @@ static int GetPartialLevenshteinDistance(string fileName, string folderName)
     {
         string part = fileName.Substring(i, folderName.Length);
         int distance = GetLevenshteinDistance(part, folderName);
-        
+
         if (distance < lowestDistance)
         {
             lowestDistance = distance;
         }
     }
-    return lowestDistance; 
+    return lowestDistance;
 }
