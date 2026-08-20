@@ -41,23 +41,62 @@ if (folderExists)
             //get file extension  
             string fileExtension = Path.GetExtension(file);
             string fileName = Path.GetFileNameWithoutExtension(file).Replace(" ", "").ToLower();
-            
+
             Console.WriteLine("====================================");
             Console.WriteLine($"Checking: {fileName} {fileExtension}");
-             Console.WriteLine("====================================");
+            Console.WriteLine("====================================");
+
+            string? bestFolderMatch = null;
+            int lowestDistance = int.MaxValue;
+
             foreach (string folder in directories)
             {
-               
+
                 string folderName = Path.GetFileName(folder).Replace(" ", "").ToLower();
                 Console.WriteLine($"  Comparing with: {folderName}");
-                
+
+                // compare file names against folder names
                 if (fileName.Contains(folderName))
                 {
-                    Console.WriteLine($"Match: {folderName}");
+                    Console.WriteLine($"  Match: {folderName}");
+                }
+                int distance = GetPartialLevenshteinDistance(fileName, folderName);
+                {
+                    if (distance < lowestDistance)
+                    {
+                        lowestDistance = distance;
+                        bestFolderMatch = folder;
+                    }
                 }
             }
+
+
+
         }
     }
 
 
+}
+static int GetLevenshteinDistance(string first, string second)
+{
+    
+}
+static int GetPartialLevenshteinDistance(string fileName, string folderName)
+{
+    int lowestDistance = int.MaxValue;
+    if (folderName.Length > fileName.Length)
+    {
+        return int.MaxValue;
+    }
+    for (int i = 0; i <= fileName.Length - folderName.Length; i++)
+    {
+        string part = fileName.Substring(i, folderName.Length);
+        int distance = GetLevenshteinDistance(part, folderName);
+        
+        if (distance < lowestDistance)
+        {
+            lowestDistance = distance;
+        }
+    }
+    return lowestDistance; 
 }
