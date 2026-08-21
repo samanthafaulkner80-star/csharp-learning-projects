@@ -1,3 +1,4 @@
+
 string? readResult;
 bool folderExists;
 
@@ -48,7 +49,7 @@ if (folderExists)
 
             string? bestFolderMatch = null;
             int lowestDistance = int.MaxValue;
-
+            double lowestNormalizedDistance = double.MaxValue;
             foreach (string folder in directories)
             {
 
@@ -60,16 +61,22 @@ if (folderExists)
                 {
                     Console.WriteLine($"  Match: {folderName}");
                 }
-                int distance = GetPartialLevenshteinDistance(fileName, folderName);
+                (int distance, string part, double normalizedDistance) = GetPartialLevenshteinDistance(fileName, folderName);
                 {
-                    if (distance < lowestDistance)
+                    Console.WriteLine($"  Best part: {part}");
+                    Console.WriteLine($"  Distance: {distance}");
+                    Console.WriteLine($" Normalized distance: {normalizedDistance}");
+
+                    if (normalizedDistance < lowestNormalizedDistance)
                     {
+                        lowestNormalizedDistance = normalizedDistance;
                         lowestDistance = distance;
                         bestFolderMatch = folder;
                     }
                 }
             }
-
+            Console.WriteLine($"Best folder match: {Path.GetFileName(bestFolderMatch)}");
+            Console.WriteLine($"Best normalized distance: {lowestNormalizedDistance}");
 
 
         }
@@ -129,22 +136,30 @@ static int GetLevenshteinDistance(string first, string second)
     }
     return distance[first.Length, second.Length];
 }
-static int GetPartialLevenshteinDistance(string fileName, string folderName)
+static (int distance, string part, double normalizedDistance) GetPartialLevenshteinDistance(string fileName, string folderName)
 {
     int lowestDistance = int.MaxValue;
+    double lowestNormalizedDistance = double.MaxValue;
+    double normalizedDistance = double.MaxValue;
+    string bestPart = "";
+
     if (folderName.Length > fileName.Length)
     {
-        return int.MaxValue;
+        return (int.MaxValue, string.Empty, double.MaxValue);
     }
     for (int i = 0; i <= fileName.Length - folderName.Length; i++)
     {
         string part = fileName.Substring(i, folderName.Length);
         int distance = GetLevenshteinDistance(part, folderName);
+        int longestLength = Math.Max(part.Length, folderName.Length);
+        normalizedDistance = (double)distance / longestLength;
 
-        if (distance < lowestDistance)
+        if (normalizedDistance < lowestNormalizedDistance)
         {
+            lowestNormalizedDistance = normalizedDistance;
             lowestDistance = distance;
+            bestPart = part;
         }
     }
-    return lowestDistance;
+    return (lowestDistance, bestPart, lowestNormalizedDistance);
 }
